@@ -23,14 +23,14 @@ void init(void)
         disp[1].screen.y += 8;
         }
     SetDispMask(1);                 // Display on screen    
-    setRGB0(&draw[0], 0, 92, 0);
+    setRGB0(&draw[0], 0, 92, 0);// bg color
     setRGB0(&draw[1], 0, 92, 0);
     draw[0].isbg = 1;
     draw[1].isbg = 1;
     PutDispEnv(&disp[db]);
     PutDrawEnv(&draw[db]);
     FntLoad(960, 0);
-    FntOpen(MARGINX, SCREENYRES - MARGINY - FONTSIZE, SCREENXRES - MARGINX * 2, FONTSIZE, 0, 280 );
+    FntOpen(MARGINX, SCREENYRES - MARGINY - FONTSIZE, SCREENXRES - MARGINX * 2, FONTSIZE, 0, 280 );// change position texts
 }
 void display(void)
 {

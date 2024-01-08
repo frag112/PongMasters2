@@ -3,7 +3,12 @@
 #include "players.h"
 #include <libapi.h>
 
-
+// start game with buttons
+// add fonts, music
+// add on screen buttons
+// to reset score and start game
+// add ai to control p2
+// p2 switch to controller if p2 pressed start
 
 int main(void)
 {                  
