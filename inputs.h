@@ -30,3 +30,5 @@ extern Controller_Data theControllers[8];  // Processed controller data
 void get_digital_direction( Controller_Data *c, int buttondata );
 
 void read_controller( Controller_Data *c, unsigned char *buf, int port );
+
+void PlayerBoundaryCheck (short controllerID);

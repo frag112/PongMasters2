@@ -4,14 +4,12 @@
 #include <libapi.h>
 
 
+
 int main(void)
 {                  
     TILE * START, * SELECT;
 
     // players
-    TILE * PLAYER1;
-    TILE * PLAYER2;
-    TILE * Ball;
 
     init();
     InitPAD(controllers[0].pad, 34, controllers[1].pad, 34);
@@ -25,30 +23,20 @@ int main(void)
         read_controller( &theControllers[0], &controllers[0].pad[0], 0 );  // Read controllers
         read_controller( &theControllers[1], &controllers[1].pad[0], 1 );
         ClearOTagR(ot[db], OTLEN);
-
-        if (theControllers[0].ypos < 2 ){
-            theControllers[0].ypos = 2;
-        } else if(theControllers[0].ypos > 174){
-            theControllers[0].ypos = 174;
-        }
-
-        if (theControllers[1].ypos < 2 ){
-            theControllers[1].ypos = 2;
-        } else if(theControllers[1].ypos > 174){
-            theControllers[1].ypos = 174;
-        }
+    
+    if(Game==1){
+        PlayerBoundaryCheck (0);
+        PlayerBoundaryCheck (1);
 
         DrawPlayer(PLAYER1, 1);
         DrawPlayer(PLAYER2, 2);
         DrawPlayer(Ball, 3);
+        DrawBorder();
+        MoveBall();
 
-        START = (TILE *)nextpri;
-        setTile(START);
-        setRGB0(START, 0, 153, 0);        
-        setXY0(START, 0 , 0);
-        setWH(START, 40, 40);
-        addPrim(ot[db], START);
-        nextpri += sizeof(TILE);
+        CheckWalls();
+    }
+
         // /\, X, O, [] 
        /* PADR = (TILE *)nextpri;
         setTile(PADR);
@@ -69,8 +57,6 @@ int main(void)
         switch(theControllers[0].button1){
            /* case 0xDF:                      // Right 
                 PADL->x0 = CENTERX - 64;
-                break;
-            case 0x7F:                      // Left  
                 PADL->x0 = CENTERX - 96;
                 break; */
             case 0xEF:       // Up    
@@ -107,12 +93,15 @@ int main(void)
         switch(theControllers[0].button2){
             case 0xDF:                      // ⭘
                 //PADR->x0 = CENTERX + 66;
+
                 break;
             case 0xBF:                      // ╳
                 //PADR->y0 = CENTERY + 16;
+                ResetBall();
                 break;
         }
-        FntPrint("Working %d pads!\n\n", theControllers[0].ypos);
+        FntPrint("Player 1 - %d Player 2 - %d!\n\n", Player1Score, Player2Score);
+        FntPrint("P1 coords: %d!\n\n", P1Y+PHeight);
         FntPrint( "Pad 1 : %02x\nButtons:%02x %02x, Stick:%02x %02x %02x %02x\n",
                     theControllers[0].type,             // Controller type : 00 == none,  41 == standard, 73 == analog/dualshock, 12 == mouse, 23 == steering wheel, 63 == gun, 53 == analog joystick
                     theControllers[0].button1,          // 

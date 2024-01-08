@@ -44,3 +44,12 @@ void read_controller( Controller_Data *c, unsigned char *buf, int port )  // get
             break;
     }
 }
+
+void PlayerBoundaryCheck (short controllerID){
+        if (theControllers[controllerID].ypos < 2 ){
+            theControllers[controllerID].ypos = 2;
+        } else if(theControllers[controllerID].ypos > 174){
+            theControllers[controllerID].ypos = 174;
+        }
+
+}
