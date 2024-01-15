@@ -3,6 +3,8 @@
 #include "players.h"
 #include <libapi.h>
 
+char p2connected = 0;
+
 // start game with buttons
 // add fonts, music
 // add on screen buttons
@@ -79,21 +81,16 @@ int main(void)
                 //START->r0 = 0;
                 break;
         }
-        /*switch(theControllers[1].button1){
-            case 0xEF:                      // Up   
-
-                break;
-            case 0xBF: // Down  
-                  
-                break;
+        switch(theControllers[1].button1){
             // Start & Select
             case 0xF7:
-                START->w = 32; START->h = 32;START->x0 -= 4;START->y0 -= 4; // START
+                //START->w = 32; START->h = 32;START->x0 -= 4;START->y0 -= 4; // START
+                p2connected = 1;
                 break;
             case 0xFE:                                                      // SELECT
                 // START->r0 = 0;
                 break;
-        }*/
+        }
         // Buttons
         switch(theControllers[0].button2){
             case 0xDF:                      // ⭘
@@ -105,8 +102,21 @@ int main(void)
                 ResetBall();
                 break;
         }
-        FntPrint("Player 1 - %d Player 2 - %d!\n\n", Player1Score, Player2Score);
-        FntPrint("P1 coords: %d!\n\n", P1Y+PHeight);
+        FntOpen(MARGINX, MARGINY, SCREENXRES - MARGINX * 2, FONTSIZE, 2, 280);
+        SetDumpFnt(1);
+        FntPrint("Player1 - %d ", Player1Score);
+        FntPrint("Player2 - %d!\n\n", Player2Score);
+        switch(p2connected){
+            case 0:
+                FntPrint("Press Start\n\n");
+                break;
+            case 1:
+                FntPrint("P2 connected: %d!\n\n", p2connected);
+                break;
+        }
+        FntFlush(1);
+        SetDumpFnt(2);
+        FntOpen(MARGINX+40, SCREENYRES - MARGINY - FONTSIZE, SCREENXRES - MARGINX * 2, FONTSIZE, 0, 280 );
         FntPrint( "Pad 1 : %02x\nButtons:%02x %02x, Stick:%02x %02x %02x %02x\n",
                     theControllers[0].type,             // Controller type : 00 == none,  41 == standard, 73 == analog/dualshock, 12 == mouse, 23 == steering wheel, 63 == gun, 53 == analog joystick
                     theControllers[0].button1,          // 
@@ -123,7 +133,7 @@ int main(void)
                     theControllers[1].analog1,          // R3 vertical
                     theControllers[1].analog2,          // L3 horizontal
                     theControllers[1].analog3 );        // L3 vertical */
-        FntFlush(-1);
+        FntFlush(2);
         display();
         }
     return 0;

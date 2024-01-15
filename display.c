@@ -30,7 +30,8 @@ void init(void)
     PutDispEnv(&disp[db]);
     PutDrawEnv(&draw[db]);
     FntLoad(960, 0);
-    FntOpen(MARGINX, SCREENYRES - MARGINY - FONTSIZE, SCREENXRES - MARGINX * 2, FONTSIZE, 0, 280 );// change position texts
+    //FntOpen(MARGINX, SCREENYRES - MARGINY - FONTSIZE, SCREENXRES - MARGINX * 2, FONTSIZE, 0, 280 );// change position texts
+    FntOpen(MARGINX, MARGINY, SCREENXRES - MARGINX * 2, FONTSIZE, 2, 280);
 }
 void display(void)
 {

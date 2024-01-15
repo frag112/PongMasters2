@@ -8,8 +8,8 @@
 #define SCREENYRES 240
 #define CENTERX SCREENXRES/2
 #define CENTERY SCREENYRES/2
-#define MARGINX 32               // margins for text display
-#define MARGINY 32
+#define MARGINX 20               // margins for text display
+#define MARGINY 20
 #define FONTSIZE 8 * 7           // Text Field Height
 #define OTLEN 8    // Ordering Table Length 
 

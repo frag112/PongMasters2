@@ -121,6 +121,7 @@ void CheckWalls(){
         Player1Score++;
         ResetBall();
     }
+
     if (BallX == (26+PWidth)){ //contact p1
         if((BallY+16)>=P1Y && BallY <=(P1Y+PHeight))
         dX = dX * (-1);
