@@ -42,6 +42,27 @@ int main(void)
         MoveBall();
 
         CheckWalls();
+        
+        FntOpen(MARGINX, MARGINY, 72, FONTSIZE, 2, 15); // p1 score
+        SetDumpFnt(1);
+        FntPrint("\n Player1\n");
+        FntPrint(" %d ", Player1Score);
+        FntFlush(1);
+
+        FntOpen(CENTERX+174, MARGINY, 72, FONTSIZE, 2, 16); // p1 score
+        SetDumpFnt(2);
+        switch(p2connected){
+            case 0:
+                FntPrint("\n Press Start\n");
+                break;
+            case 1:
+                FntPrint("\n Player2\n");
+                break;
+        }
+        FntPrint(" %d ", Player2Score);
+        FntFlush(2);
+    }else{ // intro
+        
     }
 
         // /\, X, O, [] 
@@ -102,21 +123,12 @@ int main(void)
                 ResetBall();
                 break;
         }
-        FntOpen(MARGINX, MARGINY, SCREENXRES - MARGINX * 2, FONTSIZE, 2, 280);
-        SetDumpFnt(1);
-        FntPrint("Player1 - %d ", Player1Score);
-        FntPrint("Player2 - %d!\n\n", Player2Score);
-        switch(p2connected){
-            case 0:
-                FntPrint("Press Start\n\n");
-                break;
-            case 1:
-                FntPrint("P2 connected: %d!\n\n", p2connected);
-                break;
-        }
-        FntFlush(1);
-        SetDumpFnt(2);
+        
+
+        
+        /*
         FntOpen(MARGINX+40, SCREENYRES - MARGINY - FONTSIZE, SCREENXRES - MARGINX * 2, FONTSIZE, 0, 280 );
+        SetDumpFnt(3);
         FntPrint( "Pad 1 : %02x\nButtons:%02x %02x, Stick:%02x %02x %02x %02x\n",
                     theControllers[0].type,             // Controller type : 00 == none,  41 == standard, 73 == analog/dualshock, 12 == mouse, 23 == steering wheel, 63 == gun, 53 == analog joystick
                     theControllers[0].button1,          // 
@@ -133,7 +145,7 @@ int main(void)
                     theControllers[1].analog1,          // R3 vertical
                     theControllers[1].analog2,          // L3 horizontal
                     theControllers[1].analog3 );        // L3 vertical */
-        FntFlush(2);
+        //FntFlush(3);
         display();
         }
     return 0;

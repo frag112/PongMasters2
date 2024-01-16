@@ -8,9 +8,9 @@
 #define SCREENYRES 240
 #define CENTERX SCREENXRES/2
 #define CENTERY SCREENYRES/2
-#define MARGINX 20               // margins for text display
-#define MARGINY 20
-#define FONTSIZE 8 * 7           // Text Field Height
+#define MARGINX 10               // margins for text display
+#define MARGINY 10
+#define FONTSIZE 30           // Text Field Height
 #define OTLEN 8    // Ordering Table Length 
 
 extern DISPENV disp[2];                 // Double buffered DISPENV and DRAWENV

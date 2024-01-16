@@ -31,7 +31,7 @@ void init(void)
     PutDrawEnv(&draw[db]);
     FntLoad(960, 0);
     //FntOpen(MARGINX, SCREENYRES - MARGINY - FONTSIZE, SCREENXRES - MARGINX * 2, FONTSIZE, 0, 280 );// change position texts
-    FntOpen(MARGINX, MARGINY, SCREENXRES - MARGINX * 2, FONTSIZE, 2, 280);
+    FntOpen(MARGINX, MARGINY, 120, FONTSIZE, 2, 15); // p1 score
 }
 void display(void)
 {

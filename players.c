@@ -7,7 +7,7 @@ short BallX = CENTERX -8, BallY = CENTERY - 8, dX = 1, dY = 1;
 short P1Y, P2Y;
 int Player1Score=0, Player2Score=0;
 
-char Game=1;
+char Game=0;
 
 TILE * PLAYER1;
 TILE * PLAYER2;
