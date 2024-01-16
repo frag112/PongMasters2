@@ -16,7 +16,7 @@ TILE * Ball;
 void DrawPlayer(TILE * player, short playerNum){
         player = (TILE *)nextpri;
         setTile(player);
-        setRGB0(player, 0, 255, 0);  // chage color later
+        setRGB0(player, 0, 255, 0);  
                 switch(playerNum){
                     case 1:
                         setXY0(player,26, theControllers[0].ypos);

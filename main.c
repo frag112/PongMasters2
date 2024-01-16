@@ -4,6 +4,7 @@
 #include <libapi.h>
 
 char p2connected = 0;
+TILE * START;
 
 // start game with buttons
 // add fonts, music
@@ -12,9 +13,61 @@ char p2connected = 0;
 // add ai to control p2
 // p2 switch to controller if p2 pressed start
 
+void Intro(){
+        START = (TILE *)nextpri;
+        setTile(START);
+        setRGB0(START, 0, 255, 0);  
+        setXY0(START,26, 54);
+        setWH(START, PWidth, PHeight);
+        addPrim(ot[db], START);
+        nextpri += sizeof(TILE);
+        FntFlush(-1);
+        FntOpen(100, 100, 72, FONTSIZE, 0, 15); // p1 score
+        SetDumpFnt(1);
+        FntPrint(" intro working ");
+        FntFlush(1);
+
+   // D-pad
+        switch(theControllers[0].button1){
+           /* case 0xDF:                      // Right 
+                PADL->x0 = CENTERX - 64;
+                PADL->x0 = CENTERX - 96;
+                break; */
+            case 0xEF:       // Up    
+                  
+                break;
+            case 0xBF: // Down
+
+                break;
+
+            // Start & Select
+            case 0xF7:
+               // START->w = 32; START->h = 32;START->x0 -= 4;START->y0 -= 4; // START
+                break;
+            case 0xFE:                                                      // SELECT
+                //START->r0 = 0;
+                break;
+        }
+                // Buttons
+        switch(theControllers[0].button2){
+            case 0xDF:                      // ⭘
+                //PADR->x0 = CENTERX + 66;
+
+                break;
+            case 0xBF:                      // ╳
+                //PADR->y0 = CENTERY + 16;
+                ResetBall();
+                break;
+        }
+
+
+
+}
+
+
 int main(void)
 {                  
-    TILE * START, * SELECT;
+    //TILE * START, * SELECT;
 
     // players
 
@@ -62,7 +115,7 @@ int main(void)
         FntPrint(" %d ", Player2Score);
         FntFlush(2);
     }else{ // intro
-        
+        Intro();
     }
 
         // /\, X, O, [] 
@@ -81,27 +134,7 @@ int main(void)
         setWH(START, 24, 24);
         addPrim(ot[db], START);
         nextpri += sizeof(TILE);*/
-        // D-pad
-        switch(theControllers[0].button1){
-           /* case 0xDF:                      // Right 
-                PADL->x0 = CENTERX - 64;
-                PADL->x0 = CENTERX - 96;
-                break; */
-            case 0xEF:       // Up    
-                  
-                break;
-            case 0xBF: // Down
-
-                break;
-
-            // Start & Select
-            case 0xF7:
-               // START->w = 32; START->h = 32;START->x0 -= 4;START->y0 -= 4; // START
-                break;
-            case 0xFE:                                                      // SELECT
-                //START->r0 = 0;
-                break;
-        }
+     
         switch(theControllers[1].button1){
             // Start & Select
             case 0xF7:
@@ -112,17 +145,7 @@ int main(void)
                 // START->r0 = 0;
                 break;
         }
-        // Buttons
-        switch(theControllers[0].button2){
-            case 0xDF:                      // ⭘
-                //PADR->x0 = CENTERX + 66;
 
-                break;
-            case 0xBF:                      // ╳
-                //PADR->y0 = CENTERY + 16;
-                ResetBall();
-                break;
-        }
         
 
         
