@@ -3,74 +3,49 @@
 #include "players.h"
 #include <libapi.h>
 
-char p2connected = 0;
-TILE * START;
-
-// start game with buttons
+char selectedID = 1;
 // add fonts, music
-// add on screen buttons
-// to reset score and start game
-// add ai to control p2
-// p2 switch to controller if p2 pressed start
+
 
 void Intro(){
-        START = (TILE *)nextpri;
-        setTile(START);
-        setRGB0(START, 0, 255, 0);  
-        setXY0(START,26, 54);
-        setWH(START, PWidth, PHeight);
-        addPrim(ot[db], START);
-        nextpri += sizeof(TILE);
-        FntFlush(-1);
-        FntOpen(100, 100, 72, FONTSIZE, 0, 15); // p1 score
-        SetDumpFnt(1);
-        FntPrint(" intro working ");
-        FntFlush(1);
+    // title screen
+    // add name and button text
+    // start 15, reset -40
+    switch (selectedID) {
+        case 1:
+            DrawButtonSelected(15);
+            DrawButtonIdle(-40);
+            break;
+        case 2:
+            DrawButtonIdle(15);
+            DrawButtonSelected(-40);
+            break;
+    }
 
-   // D-pad
-        switch(theControllers[0].button1){
-           /* case 0xDF:                      // Right 
-                PADL->x0 = CENTERX - 64;
-                PADL->x0 = CENTERX - 96;
-                break; */
-            case 0xEF:       // Up    
-                  
-                break;
-            case 0xBF: // Down
-
-                break;
-
-            // Start & Select
-            case 0xF7:
-               // START->w = 32; START->h = 32;START->x0 -= 4;START->y0 -= 4; // START
-                break;
-            case 0xFE:                                                      // SELECT
-                //START->r0 = 0;
-                break;
+    switch(theControllers[0].button1){
+        case 0xEF:       // Up    
+            selectedID = 1;
+            break;
+        case 0xBF: // Down
+            selectedID = 2;
+            break;
         }
-                // Buttons
-        switch(theControllers[0].button2){
-            case 0xDF:                      // ⭘
-                //PADR->x0 = CENTERX + 66;
-
+    switch(theControllers[0].button2){
+        case 0xDF:                      // ⭘
                 break;
-            case 0xBF:                      // ╳
+        case 0xBF:                      // ╳
                 //PADR->y0 = CENTERY + 16;
-                ResetBall();
-                break;
+            (selectedID == 1) ?  Game = 1 :  ResetScore();
+            break;
         }
-
-
-
+    if(theControllers[0].button1 == 0xF7){
+            Game = 1;       
+    }
 }
 
 
 int main(void)
 {                  
-    //TILE * START, * SELECT;
-
-    // players
-
     init();
     InitPAD(controllers[0].pad, 34, controllers[1].pad, 34);
     StartPAD();
@@ -89,13 +64,14 @@ int main(void)
         PlayerBoundaryCheck (1);
 
         DrawPlayer(PLAYER1, 1);
+        if (p2connected == 0) P2AI();
         DrawPlayer(PLAYER2, 2);
         DrawPlayer(Ball, 3);
         DrawBorder();
         MoveBall();
 
         CheckWalls();
-        
+        ChangeDifficulty();
         FntOpen(MARGINX, MARGINY, 72, FONTSIZE, 2, 15); // p1 score
         SetDumpFnt(1);
         FntPrint("\n Player1\n");
@@ -106,7 +82,7 @@ int main(void)
         SetDumpFnt(2);
         switch(p2connected){
             case 0:
-                FntPrint("\n Press Start\n");
+                FntPrint("\n Start\n");
                 break;
             case 1:
                 FntPrint("\n Player2\n");
@@ -116,6 +92,9 @@ int main(void)
         FntFlush(2);
     }else{ // intro
         Intro();
+    }
+    if(theControllers[0].button1 == 0xF7){
+        Game = 0;
     }
 
         // /\, X, O, [] 
@@ -140,6 +119,7 @@ int main(void)
             case 0xF7:
                 //START->w = 32; START->h = 32;START->x0 -= 4;START->y0 -= 4; // START
                 p2connected = 1;
+                theControllers[1].ypos = P2Y;
                 break;
             case 0xFE:                                                      // SELECT
                 // START->r0 = 0;
