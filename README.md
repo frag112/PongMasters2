@@ -12,7 +12,6 @@ Fonts from:
 Simple pong game made for Playstation 1 and PSX emulators.
 1 player with AI opponent, local 2 players game.
 
----
-
+## Game features
 every 10 seconds players become shorter to make game little harder.
 AI opponent becoming smarter over time
