@@ -119,6 +119,7 @@ int main(void)
             case 0xF7:
                 //START->w = 32; START->h = 32;START->x0 -= 4;START->y0 -= 4; // START
                 p2connected = 1;
+                ResetScore();
                 theControllers[1].ypos = P2Y;
                 break;
             case 0xFE:                                                      // SELECT
