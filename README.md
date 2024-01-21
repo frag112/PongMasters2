@@ -3,7 +3,7 @@ Huge thanks to this resources:
 - https://github.com/Wituz
 - https://github.com/ABelliqueux/nolibgs_hello_worlds/tree/main
 - https://psx.arthus.net/sdk/Psy-Q/DOCS/
-- http://lameguy64.net/tutorials/pstutorials
+- http://lameguy64.net/tutorials/pstutorials   
 Fonts from:
 - https://lpc.opengameart.org/content/boxy-bold-truetype-font
 
