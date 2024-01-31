@@ -4,6 +4,7 @@ Huge thanks to this resources:
 - https://github.com/ABelliqueux/nolibgs_hello_worlds/tree/main
 - https://psx.arthus.net/sdk/Psy-Q/DOCS/
 - http://lameguy64.net/tutorials/pstutorials
+- https://www.retroreversing.com/ps1-libs
 
 Fonts from:
 - https://lpc.opengameart.org/content/boxy-bold-truetype-font
