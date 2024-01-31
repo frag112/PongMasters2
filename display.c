@@ -1,5 +1,6 @@
 #include "display.h"
 
+
 DISPENV disp[2];                 // Double buffered DISPENV and DRAWENV
 DRAWENV draw[2];
 u_long ot[2][OTLEN];             // double ordering table of length 8 * 32 = 256 bits / 32 bytes
@@ -35,6 +36,8 @@ void init(void)
 }
 void display(void)
 {
+
+
     DrawSync(0);
     VSync(0);
     PutDispEnv(&disp[db]);

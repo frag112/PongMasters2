@@ -23,3 +23,5 @@ extern short db;     // index of which buffer is used, values 0, 1
 
 void init(void);
 void display(void);
+void initImage();
+void imageBuff();

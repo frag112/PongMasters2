@@ -3,12 +3,16 @@
 #include "players.h"
 #include <libapi.h>
 #include <libgs.h>
-#include <limits.h>
 #include "font1.h"
 #include "font2.h"
 
 char selectedID = 1;
 // add fonts, music
+#define OT_LENGTH 1                              // ordering table length
+#define PACKETMAX (300)                          // the max num of objects
+GsOT      WorldOrderingTable[2];                 // ordering table handlers
+GsOT_TAG  OrderingTable[2][1<<OT_LENGTH];        // ordering tables
+PACKET    GPUOutputPacket[2][PACKETMAX];         // GPU Packet work area
 unsigned long __ramsize = 0x00200000;
 unsigned long __stacksize = 0x00004000;
 
@@ -83,7 +87,7 @@ void LoadStuff(void) {
     TIM_IMAGE my_image;
 
     // Load the TIM
-    LoadTexture((u_long*)tim_my_image, &my_image);
+    //LoadTexture((u_long*)tim_my_image, &my_image);
     
     // Copy the TIM coordinates
     tim_prect   = *my_image.prect;
@@ -101,11 +105,7 @@ int main(void)
     theControllers[0].ypos = CENTERY - 32;
     theControllers[1].ypos = CENTERY - 32;
 
-
-    getTPage(2, 1, 520, 4);
-    u_long ass = 1;
-    OpenTIM(0);
-    ReadTIM(font1);
+    initImage();
 
     while (1)
     {
@@ -204,7 +204,99 @@ int main(void)
                     theControllers[1].analog2,          // L3 horizontal
                     theControllers[1].analog3 );        // L3 vertical */
         //FntFlush(3); 
+        imageBuff();
         display();
         }
     return 0;
     }
+
+void imageBuff(){
+    int currentbuffer;
+       // get the current buffer
+   currentbuffer=GsGetActiveBuff();
+
+   // setup the packet workbase
+   GsSetWorkBase((PACKET*)GPUOutputPacket[currentbuffer]);
+
+   // clear the ordering table
+   GsClearOt(0,0,&WorldOrderingTable[currentbuffer]);
+
+   // insert sprites into the ordering table
+   GsSortSprite(&images[0], &WorldOrderingTable[currentbuffer], 0);
+   GsSortSprite(&images[1], &WorldOrderingTable[currentbuffer], 0);
+}
+
+    void initImage()
+{
+   RECT            rect;                                    // RECT structure
+   GsIMAGE         tim_data;                                // holds tim graphic info
+   	
+   // put data from tim file into rect         
+   //GsGetTimInfo ((u_long *)(images_addr+4),&tim_data);
+   GsGetTimInfo ((u_long *)(font1+4),&tim_data);
+
+   // load the image into the frame buffer
+   rect.x = tim_data.px;                                    // tim start X coord
+   rect.y = tim_data.py;                                    // tim start Y coord
+   rect.w = tim_data.pw;                                    // data width
+   rect.h = tim_data.ph;                                    // data height
+   // load the tim data into the frame buffer
+   LoadImage(&rect, tim_data.pixel);       
+
+   // load the CLUT into the frame buffer
+   rect.x = tim_data.cx;                                    // x pos in frame buffer
+   rect.y = tim_data.cy;                                    // y pos in frame buffer
+   rect.w = tim_data.cw;                                    // width of CLUT
+   rect.h = tim_data.ch;                                    // height of CLUT
+   // load data into frame buffer (DMA from DRAM to VRAM)
+   LoadImage(&rect, tim_data.clut);                
+
+
+   // initialise sprite
+   images[0].attribute=0x2000000;                           // 16 bit CLUT, all options off (0x1 = 8-bit, 0x2 = 16-bit)
+   images[0].x = 0;                                         // draw at x coord 0
+   images[0].y = 0;                                         // draw at y coord 0
+   images[0].w = 256;                                       // width of sprite
+   images[0].h = tim_data.ph;                               // height of sprite
+   // texture page | texture mode (0 4-bit, 1 8-bit, 2 16-bit), semi-transparency rate, texture x, texture y in the framebuffer
+   images[0].tpage=GetTPage(1, 2, 320, 0);
+   images[0].r = 128;                                       // RGB Data
+   images[0].g = 128;
+   images[0].b = 128;
+   images[0].u=0;                                           // position within timfile for sprite
+   images[0].v=0;                                           
+   images[0].cx = tim_data.cx;                              // CLUT location x coord
+   images[0].cy = tim_data.cy;                              // CLUT location y coord
+   images[0].r=images[0].g=images[0].b=128;                 // normal luminosity
+   images[0].mx = 0;                                        // rotation x coord
+   images[0].my = 0;                                        // rotation y coord
+   images[0].scalex = ONE;                                  // scale x coord (ONE = 100%)
+   images[0].scaley = ONE;                                  // scale y coord (ONE = 100%)
+   images[0].rotate = 0;                                    // degrees to rotate   
+
+
+   // initialise sprite
+   images[1].attribute=0x2000000;                           // 16 bit CLUT, all options off (0x1 = 8-bit, 0x2 = 16-bit)
+   images[1].x = 256;                                       // draw at x coord 0
+   images[1].y = 0;                                         // draw at y coord 0
+   images[1].w = 64;                                        // width of sprite
+   images[1].h = tim_data.ph;                               // height of sprite
+   // texture page | texture mode (0 4-bit, 1 8-bit, 2 16-bit), semi-transparency rate, texture x, texture y in the framebuffer
+   images[1].tpage=GetTPage(1, 2, 576, 0);
+   images[1].r = 128;                                       // RGB Data
+   images[1].g = 128;
+   images[1].b = 128;
+   images[1].u=0;                                           // position within timfile for sprite
+   images[1].v=0;                                           
+   images[1].cx = tim_data.cx;                              // CLUT Location x coord
+   images[1].cy = tim_data.cy;                              // CLUT Location y coord
+   images[1].r=images[1].g=images[1].b=128;					// normal luminosity
+   images[1].mx = 0;                                        // rotation x coord
+   images[1].my = 0;                                        // rotation y coord
+   images[1].scalex = ONE;                                  // scale x coord (ONE = 100%)
+   images[1].scaley = ONE;                                  // scale y coord (ONE = 100%)
+   images[1].rotate = 0;                                    // degrees to rotate   
+
+   // wait for all drawing to finish
+   DrawSync(0);
+}
