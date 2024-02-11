@@ -16,3 +16,7 @@ Simple pong game made for Playstation 1 and PSX emulators.
 ## Game features
 every 10 seconds players become shorter to make game little harder.
 AI opponent becoming smarter over time
+
+---
+i didnt figure out how to display sprites with tims
+and vag converter just wont take my wav files for background audio
